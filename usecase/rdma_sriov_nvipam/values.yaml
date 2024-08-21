@@ -3,7 +3,7 @@ nfd:
 sriovNetworkOperator:
   enabled: false
 nvIpam:
-  deploy: false
+  deploy: true
 # NicClusterPolicy CR values:
 deployCR: true
 ofedDriver:
@@ -21,7 +21,7 @@ rdmaSharedDevicePlugin:
 sriovDevicePlugin:
   deploy: true
   resources:
-    - name: rdma_shared_device_a
+    - name: rdma_sriov_a
       pciAddresses: ["0000:23:00.0"]
 
 secondaryNetwork:
@@ -31,4 +31,4 @@ secondaryNetwork:
   cniPlugins:
     deploy: true
   ipamPlugin:
-    deploy: true
+    deploy: false
