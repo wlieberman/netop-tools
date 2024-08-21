@@ -18,7 +18,7 @@ spec:
       "kubernetes": {
         "kubeconfig": "/etc/cni/net.d/whereabouts.d/whereabouts.kubeconfig"
       },
-      "range": ${NETOP_NETWORK_RANGE},
+      "range": "${NETOP_NETWORK_RANGE}",
       "exclude": [],
       "log_file" : "/var/log/whereabouts.log",
       "log_level" : "info"
