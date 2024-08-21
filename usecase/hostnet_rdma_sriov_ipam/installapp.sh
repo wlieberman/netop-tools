@@ -20,7 +20,7 @@ kind: Pod
 metadata:
   name: ${NAME}
   annotations:
-    k8s.v1.cni.cncf.io/networks: ${NETOP_NETWORK}
+    k8s.v1.cni.cncf.io/networks: ${NETOP_NETWORK_NAME}-a
 spec:
   containers:
   - name: appcntr1
