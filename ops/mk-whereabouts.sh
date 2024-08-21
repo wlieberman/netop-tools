@@ -13,7 +13,7 @@ spec:
   resourceName: "${NETOP_NETWORK}"
   ipam: |
     {
-      "type": ${NETWORK_TYPE},
+      "type": "${IPAM_TYPE}",
       "datastore": "kubernetes",
       "kubernetes": {
         "kubeconfig": "/etc/cni/net.d/whereabouts.d/whereabouts.kubeconfig"
