@@ -1,0 +1,34 @@
+nfd:
+  enabled: true
+sriovNetworkOperator:
+  enabled: false
+nvIpam:
+  deploy: false
+# NicClusterPolicy CR values:
+deployCR: true
+ofedDriver:
+  deploy: true
+  env:
+  - name: RESTORE_DRIVER_ON_POD_TERMINATION
+    value: "true"
+  - name: UNLOAD_STORAGE_MODULES
+    value: "true"
+  - name: CREATE_IFNAMES_UDEV
+    value: "true"
+rdmaSharedDevicePlugin:
+  deploy: false
+
+sriovDevicePlugin:
+  deploy: true
+  resources:
+    - name: rdma_shared_device_a
+      pciAddresses: ["0000:23:00.0"]
+
+secondaryNetwork:
+  deploy: true
+  multus:
+    deploy: true
+  cniPlugins:
+    deploy: true
+  ipamPlugin:
+    deploy: true
