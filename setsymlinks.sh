@@ -21,8 +21,9 @@ if [ "$#" -lt 1 ];then
 fi
 LINKS=( csi-driver-lvm release multus-cni nerdctl )
 for LINK in ${LINKS[@]};do
-  rm -f ${LINK}
-  ln -s ../${LINK} ${LINK}
+# rm -f ${LINK}
+# ln -s ../${LINK} ${LINK}
+  mkdir -p ${LINK}
 done
 rm -f ./uc
 ln -s ./usecase/${1} uc
@@ -30,6 +31,7 @@ source ./uc/netop.cfg
 mkdir -p ./release/${NETOP_VERSION}/netop-chart
 rm -f ./netop-chart
 ln -s ./release/${NETOP_VERSION}/netop-chart ./netop-chart
+mkdir -p ./release/calico-${CALICO_VERSION}
 rm -f ./calico
 ln -s ./release/calico-${CALICO_VERSION} ./calico
 rm -f ./values.yaml

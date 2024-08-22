@@ -23,6 +23,8 @@ sriovDevicePlugin:
   resources:
     - name: rdma_shared_device_a
       pciAddresses: ["0000:23:00.0"]
+    - name: rdma_shared_device_b
+      pciAddresses: ["0000:23:00.1"]
 
 secondaryNetwork:
   deploy: true

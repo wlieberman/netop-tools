@@ -20,6 +20,7 @@ source ./netop.cfg
 NETWORK_NAME=${1}
 shift
 RESOURCE=`echo ${NETWORK_NAME}|cut -d'-' -f2-99|sed 's/-/_/g'`
+IDX=0
 for DEV in ${*};do
 cat <<EOF> "${NETWORK_NAME}-${DEV}"-cr.yaml
 apiVersion: mellanox.com/v1alpha1
@@ -36,10 +37,11 @@ spec:
       "kubernetes": {
         "kubeconfig": "/etc/cni/net.d/whereabouts.d/whereabouts.kubeconfig"
       },
-      "range": "${NETOP_NETWORK_RANGE}",
+      "range": "192.169.${IDX}.0/24",
       "exclude": [],
       "log_file": "/var/log/whereabouts.log",
       "log_level": "info"
     }
 EOF
+let IDX=IDX+1
 done
