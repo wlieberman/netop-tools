@@ -6,7 +6,7 @@ source ./netop.cfg
 cd ./restart
 ./restartk8master.sh
 cd ../install
-./insk8master.sh init
-./insk8master.sh calico
-./insk8master.sh netop
+./ins-k8master.sh init
+./ins-k8master.sh calico
+./ins-k8master.sh netop
 kubectl get nodes
