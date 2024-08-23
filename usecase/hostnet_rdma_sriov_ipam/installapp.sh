@@ -10,8 +10,8 @@ shift
 NODE=${1}
 shift
 if [ "${NAME}" = "" ];then
-	echo "usage:$0 {podname} {dev}"
-	echo "usage:$0 {podname} {dev} {worker node}"
+	echo "usage:$0 {podname} {networkid}"
+	echo "usage:$0 {podname} {network id} {worker node}"
 	exit 1
 fi
 mkdir -p apps
