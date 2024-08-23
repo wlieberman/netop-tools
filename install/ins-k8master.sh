@@ -16,11 +16,8 @@ master)
   ;;
 init)
   kubeadm init --pod-network-cidr=${K8CIDR}
-  SRVIP="192.168.122.128"
-  #kubeadm init --apiserver-advertise-address="${SRVIP} --apiserver-cert-extra-sans="${SRVIP} --node-name ub2204-master --pod-network-cidr=${K8CIDR}
-  #kubeadm init --apiserver-advertise-address="${SRVIP}" --apiserver-cert-extra-sans="${SRVIP}" --pod-network-cidr=${K8CIDR}
-  # ./fixes/fix config issues
   source ../k8envroot.sh
+  # ./fixes/fix config issues
   ./fixes/fixcrtauth.sh
   ./fixes/fixcontainerd.sh 
   ./configcrictl.sh
@@ -28,13 +25,13 @@ init)
   ;;
 calico)
   source ../k8envroot.sh
-  # will need a wait here.
+  ./wait-k8sready.sh
   ./ins-calico.sh
   ./ins-calicoctl.sh
   ;;
 netop)
   source ../k8envroot.sh
-  # network operator needs calico
+  ./wait-calicoready.sh
   # setup helm charts
   ./ins-netop-chart.sh
   ./ins-network-operator.sh
