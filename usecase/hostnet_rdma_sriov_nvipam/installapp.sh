@@ -33,9 +33,9 @@ spec:
         add: ["IPC_LOCK"]
     resources:
       requests:
-        nvidia.com/rdma_shared_device_${DEV}: '1'
+        nvidia.com/${NETOP_RESOURCE}_${DEV}: '1'
       limits:
-        nvidia.com/rdma_shared_device_${DEV}: '1'
+        nvidia.com/${NETOP_RESOURCE}_${DEV}: '1'
     command:
     - sh
     - -c
