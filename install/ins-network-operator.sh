@@ -10,5 +10,5 @@ if [ "${X}" = "0" ];then
   kubectl create ns ${NETOP_NAMESPACE}
 fi
 ./mksecret.sh
-./applycrds.sh 
 helm install -n ${NETOP_NAMESPACE} network-operator nvidia/network-operator -f ./values.yaml
+./applycrds.sh 

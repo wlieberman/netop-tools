@@ -2,35 +2,40 @@
 #
 #
 #
+if [ "$#" -lt 1 ];then
+  echo "usage:$0 {NETWORK_DEV}"
+  echo "example:$0 a"
+  exit 1
+fi
+DEV=${1}
+shift
 source ./netop.cfg
+FILE="./Network-Attachment-Definitions-${DEV}.yaml"
 # Copyright (c) NVIDIA Corporation 2023
 # https://github.com/k8snetworkplumbingwg/multus-cni/tree/master/examples#passing-down-device-information
-cat << EOF > ./Network-Attachment-Definitions.yaml
+cat << HEREDOC > ${FILE}
 ---
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
-  name: ${NETOP_NETWORK}
-  #namespace: ${NETOP_NAMESPACE}
-  namespace: default
+  name: ${NETOP_NETWORK_NAME}-${DEV}
+  namespace: ${NETOP_APP_NAMESPACE}
   annotations:
     k8s.v1.cni.cncf.io/resourceName: nvidia.com/mlnxnics
 spec:
   config: |-
     {
       "cniVersion": "0.3.1",
-      "name": "${NETOP_NETWORK}",
+      "name": "${NETOP_NETWORK_NAME}-${DEV}",
       "plugins": [
         {
           "type": "sriov",
           "ipam": {
-            "type": "${NETWORK_TYPE}",
+            "type": "${IPAM_TYPE}",
             "poolName": "${NETOP_NETWORK_POOL}"
           }
         }
       ]
     }
-EOF
-#from inside config "name": "sriov-rdma-net",
+HEREDOC
 #kubectl apply set-last-applied -f ./Network-Attachment-Definitions.yaml --create-annotation
-kubectl apply -f ./Network-Attachment-Definitions.yaml

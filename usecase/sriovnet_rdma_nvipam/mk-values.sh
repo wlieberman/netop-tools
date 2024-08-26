@@ -1,11 +1,22 @@
+#!/bin/bash
+#
+#
+source ./netop.cfg
+cat <<HEREDOC1>./values.yaml
 nfd:
   enabled: true
 sriovNetworkOperator:
   enabled: true
+HEREDOC1
+if [ "${PROD_VER}" = "0" ];then
+cat <<HEREDOC2>>./values.yaml
   imagePullSecrets: [ngc-image-secret]   # <- specify your created pull secrets for ngc private repo
 
 # NicClusterPolicy CR values:
 imagePullSecrets: [ngc-image-secret]   # <- specify your created pull secrets for ngc private repo
+HEREDOC2
+fi
+cat <<HEREDOC3>>./values.yaml
 deployCR: true
 nvIpam:
   deploy: true
@@ -33,3 +44,4 @@ secondaryNetwork:
     deploy: true
   ipamPlugin:
     deploy: false
+HEREDOC3
