@@ -5,11 +5,13 @@
 source ./netop.cfg
 NAME=${1}
 shift
+DEV=${1}
+shift
 NODE=${1}
 shift
 if [ "${NAME}" = "" ];then
-	echo "usage:$0 {podname}"
-	echo "usage:$0 {podname} {worker node}"
+	echo "usage:$0 {podname} {networkid}"
+	echo "usage:$0 {podname} {network id} {worker node}"
 	exit 1
 fi
 mkdir -p apps
@@ -20,7 +22,7 @@ kind: Pod
 metadata:
   name: ${NAME}
   annotations:
-    k8s.v1.cni.cncf.io/networks: ${NETOP_NETWORK}
+    k8s.v1.cni.cncf.io/networks: ${NETOP_NETWORK_NAME}-${DEV}
 spec:
   containers:
   - name: appcntr1
@@ -31,9 +33,9 @@ spec:
         add: ["IPC_LOCK"]
     resources:
       requests:
-        nvidia.com/rdma_shared_device_a: '1'
+        nvidia.com/${NETOP_RESOURCE}_${DEV}: '1'
       limits:
-        nvidia.com/rdma_shared_device_a: '1'
+        nvidia.com/${NETOP_RESOURCE}_${DEV}: '1'
     command:
     - sh
     - -c

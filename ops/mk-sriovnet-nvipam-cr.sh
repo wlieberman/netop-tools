@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # configure the secondary network
 #
@@ -12,15 +12,15 @@ NETWORK_NAME=${1}
 shift
 RESOURCE=`echo ${NETWORK_NAME}|cut -d'-' -f2-99|sed 's/-/_/g'`
 for DEV in ${*};do
-cat <<EOF> "${NETWORK_NAME}-${DEV}"-cr.yaml
+cat <<HEREDOC> "${NETWORK_NAME}-${DEV}"-cr.yaml
 apiVersion: sriovnetwork.openshift.io/v1
-kind: SriovNetwork
+kind: ${NETOP_NETWORK_TYPE}
 metadata:
-  name: "${NETOP_NETWORK}_${DEV}"
+  name: "${NETOP_NETWORK_NAME}-${DEV}"
   namespace: ${NETOP_NAMESPACE}
 spec:
   vlan: ${NETOP_NETWORK_VLAN}
-  networkNamespace: "${NETOP_NETWORK_NAMESPACE}"
+  networkNamespace: "${NETOP_NAMESPACE}"
   resourceName: "${RESOURCE}_${DEV}"
   ipam: |
     {
@@ -34,7 +34,4 @@ spec:
       "poolName": "${NETOP_NETWORK_POOL}"
     }
 HEREDOC
-#     "type": "${NETWORK_TYPE}",
-#kubectl get sriovnetwork -A
-#kubectl -n ${NETOP_NAMESPACE} get sriovnetworknodestates.sriovnetwork.openshift.io -o yaml
-#kubectl get pod -n ${NETOP_NAMESPACE} | grep sriov
+done
