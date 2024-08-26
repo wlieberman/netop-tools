@@ -1,10 +1,11 @@
 #!/bin/bash
 #
 #
+source ./netop.cfg
 echo NetworkAttachmentDefinitions
 kubectl get Network-Attachment-Definitions -A
-echo HostDeviceNetwork
-kubectl get HostDeviceNetwork -A
+echo ${NETOP_NETWORK_TYPE}
+kubectl get ${NETOP_NETWORK_TYPE} -A
 echo get NicClusterPolicy
 kubectl get NicClusterPolicy nic-cluster-policy
 echo "check node rdma device status"

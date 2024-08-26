@@ -3,8 +3,7 @@
 # create a secrets file for nvstaging
 #
 source ./netop.cfg
-#FILE="~/.docker/config.json"
-#if [ "${PROD_VER}" = "0" ];then
+if [ "${PROD_VER}" = "0" ];then
   FILE="/root/.docker/config.json"
   ../uninstall/delsecret.sh
   echo "START"
@@ -16,4 +15,4 @@ source ./netop.cfg
     kubectl -n ${NETOP_NAMESPACE} create secret generic ${NGC_SECRET} --from-file=.dockerconfigjson=${FILE} --type=kubernetes.io/dockerconfigjson
   fi
   #kubectl -n network-operator create secret generic ngc-image-secret --from-file=.dockerconfigjson=~/.docker/config.json --type=kubernetes.io/dockerconfigjson
-#fi
+fi
