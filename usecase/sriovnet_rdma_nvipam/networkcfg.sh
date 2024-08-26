@@ -8,8 +8,12 @@ source ./netop.cfg
 #
 ./ops/mk-sriovpolicy.sh 0000:23:00.0 a
 kubectl apply -f sriovnetwork-node-policy-a.yaml
+./ops/mk-network-attachment.sh a
+kubectl apply -f "./Network-Attachment-Definitions-a.yaml"
 ./ops/mk-sriovpolicy.sh 0000:24:00.0 b
 kubectl apply -f sriovnetwork-node-policy-b.yaml
+./ops/mk-network-attachment.sh b
+kubectl apply -f "./Network-Attachment-Definitions-b.yaml"
 #
 # define the custom resource by network
 #

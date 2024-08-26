@@ -19,7 +19,7 @@ metadata:
   name: "${NETOP_NETWORK_NAME}-${DEV}"
   namespace: ${NETOP_NAMESPACE}
 spec:
-  vlan: ${NETOP_NETWORK_VLAN}
+  #vlan: ${NETOP_NETWORK_VLAN}
   networkNamespace: "${NETOP_APP_NAMESPACE}"
   resourceName: "${NETOP_RESOURCE}_${DEV}"
   ipam: |
