@@ -20,7 +20,7 @@ metadata:
   namespace: ${NETOP_NAMESPACE}
 spec:
   vlan: ${NETOP_NETWORK_VLAN}
-  networkNamespace: "${NETOP_NETWORK_NAMESPACE}"
+  networkNamespace: "${NETOP_APP_NAMESPACE}"
   resourceName: "sriov_resource"
   ipam: |
     {

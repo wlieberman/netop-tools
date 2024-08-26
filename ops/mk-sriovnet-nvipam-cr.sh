@@ -10,7 +10,7 @@ fi
 source ./netop.cfg
 NETWORK_NAME=${1}
 shift
-RESOURCE=`echo ${NETWORK_NAME}|cut -d'-' -f2-99|sed 's/-/_/g'`
+#RESOURCE=`echo ${NETWORK_NAME}|cut -d'-' -f2-99|sed 's/-/_/g'`
 for DEV in ${*};do
 cat <<HEREDOC> "${NETWORK_NAME}-${DEV}"-cr.yaml
 apiVersion: sriovnetwork.openshift.io/v1
@@ -20,13 +20,13 @@ metadata:
   namespace: ${NETOP_NAMESPACE}
 spec:
   vlan: ${NETOP_NETWORK_VLAN}
-  networkNamespace: "${NETOP_NAMESPACE}"
-  resourceName: "${RESOURCE}_${DEV}"
+  networkNamespace: "${NETOP_APP_NAMESPACE}"
+  resourceName: "${NETOP_RESOURCE}_${DEV}"
   ipam: |
     {
       "datastore": "kubernetes",
       "kubernetes": {
-        "kubeconfig": "/etc/cni/net.d/${NETWORK_TYPE}.d/${NETWORK_TYPE}.kubeconfig"
+        "kubeconfig": "/etc/cni/net.d/${IPAM_TYPE}.d/${IPAM_TYPE}.kubeconfig"
       },
       "log_file": "/tmp/${NETWORK_TYPE}.log",
       "log_level": "debug",
