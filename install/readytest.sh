@@ -11,7 +11,7 @@ function nsReady()
       NS=`echo ${POD} | cut -d, -f2`
       NAME=`echo ${POD} | cut -d, -f3`
       RCNT=`kubectl get pods -n ${NS} | tr -s [:space:] | cut -d' ' -f1,3 | grep "${NAME}" | grep -c Running`
-      if [ "${CNT}" != "${RCNT}" ];then
+      if [ "${RCNT}" -lt "${CNT}" ];then
         READY=0
         break
       fi
