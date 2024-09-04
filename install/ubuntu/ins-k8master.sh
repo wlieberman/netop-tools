@@ -1,18 +1,25 @@
-#!/bin/bash -x
+#!/bin/bash -xe
 #
 # install network operator master node
 #
-source ./netop.cfg
+if [ -z ${NETOP_ROOT_DIR} ];then
+  echo "NETOP_ROOT_DIR directory is not set"
+  exit 1
+fi
+
+source ${NETOP_ROOT_DIR}/netop.cfg
+source ${NETOP_ROOT_DIR}/k8envroot.sh
+
 CMD="${1}"
 shift
 case "${CMD}" in
 master)
   systemctl mask swap.target # permanently turn off swap
   apt-get install -y git
-  ./installhelm.sh
-  ./installk8repo.sh
-  ./installk8base.sh
-  ./installdocker.sh
+  ${NETOP_ROOT_DIR}/install/installhelm.sh
+  ${NETOP_ROOT_DIR}/install/installk8repo.sh
+  ${NETOP_ROOT_DIR}/install/installk8base.sh
+  ${NETOP_ROOT_DIR}/install/installdocker.sh
   ;;
 init)
   kubeadm init --pod-network-cidr=${K8CIDR}
@@ -20,24 +27,20 @@ init)
   #kubeadm init --apiserver-advertise-address="${SRVIP} --apiserver-cert-extra-sans="${SRVIP} --node-name ub2204-master --pod-network-cidr=${K8CIDR}
   #kubeadm init --apiserver-advertise-address="${SRVIP}" --apiserver-cert-extra-sans="${SRVIP}" --pod-network-cidr=${K8CIDR}
   # fix config issues
-  source ../k8envroot.sh
-  ./fixcrtauth.sh
-  ./fixcontainerd.sh 
-  ./configcrictl.sh
+  ${NETOP_ROOT_DIR}/install/fixcrtauth.sh
+  ${NETOP_ROOT_DIR}/install/fixcontainerd.sh 
+  ${NETOP_ROOT_DIR}/install/configcrictl.sh
   #./installmultus.sh
   ;;
 calico)
-  source ../k8envroot.sh
   # will need a wait here.
-  ./installcalico.sh
+  ${NETOP_ROOT_DIR}/install/installcalico.sh
   ;;
 netop)
-  source ../k8envroot.sh
   # network operator needs calico
-  ./install-network-operator.sh
+  ${NETOP_ROOT_DIR}/install/install-network-operator.sh
   ;;
 app)
-  source ../k8envroot.sh
   #
   # deploy app
   #

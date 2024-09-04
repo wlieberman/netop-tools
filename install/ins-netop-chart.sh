@@ -1,9 +1,14 @@
-#!/bin/bash -x
+#!/bin/bash -ex
 #
 # install the network operator chart
 #
-source ./netop.cfg
-cd ./netop-chart
+source ${NETOP_ROOT_DIR}/global_ops.cfg
+NETOP_CHART_DIR=${NETOP_ROOT_DIR}/release/${NETOP_VERSION}/netop-chart
+
+[ ! -d ${NETOP_CHART_DIR} ] && mkdir -p ${NETOP_CHART_DIR}
+
+cd ${NETOP_CHART_DIR}
+
 X=`helm repo list | grep -c ${HELM_NVIDIA_REPO}`
 if [ "${X}" = "0" ];then
   helm repo remove nvidia

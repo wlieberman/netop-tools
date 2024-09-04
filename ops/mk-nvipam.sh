@@ -1,8 +1,8 @@
-#!/bin/bash -x
+#!/bin/bash -xe
 #
 # define nvipam resources
 #
-source ./netop.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 function nv_ippool()
 {
 cat <<POOLEOF > ./ippool.yaml

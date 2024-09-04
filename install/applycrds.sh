@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/bash -e
 #
 # apply the crds
 #
 kubectl apply \
-   -f ./netop-chart/network-operator/crds \
-   -f ./netop-chart/network-operator/charts/sriov-network-operator/crds
+   -f ${NETOP_ROOT_DIR}/release/${NETOP_VERSION}/netop-chart/network-operator/crds \
+   -f ${NETOP_ROOT_DIR}/release/${NETOP_VERSION}/netop-chart/network-operator/charts/sriov-network-operator/crds

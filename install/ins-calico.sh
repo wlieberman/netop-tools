@@ -2,14 +2,12 @@
 #
 # https://docs.tigera.io/calico/3.25/getting-started/kubernetes/helm
 #
-source ./netop.cfg
-DIR="../release/calico-${CALICO_VERSION}"
+source ${NETOP_ROOT_DIR}/global_ops.cfg
+DIR="${NETOP_ROOT_DIR}/release/calico-${CALICO_VERSION}"
 if [ ! -d ${DIR} ];then
   mkdir -p ${DIR}
 fi
-rm -f calico
-ln -s ${DIR} calico
-pushd .
+
 cd ${DIR}
 if [ ! -f ./tigera-operator.yaml ];then
   curl -o ./tigera-operator.yaml https://raw.githubusercontent.com/projectcalico/calico/${CALICO_VERSION}/manifests/tigera-operator.yaml
@@ -20,7 +18,7 @@ fi
 #
 # delete existing tigera-operator namespace.
 #
-../uninstall/delhelmchart.sh calico tigera-operator
+${NETOP_ROOT_DIR}/uninstall/delhelmchart.sh calico tigera-operator
 #
 # Create the tigera-operator namespace.
 #
@@ -43,8 +41,8 @@ helm install calico projectcalico/tigera-operator --namespace tigera-operator
 #
 helm repo update
 kubectl apply -f ./custom-resources.yaml
-popd
-./fixes/fix_calico_bird.sh
+
+${NETOP_ROOT_DIR}/install/fixes/fix_calico_bird.sh
 #helm install calico projectcalico/tigera-operator --version ${CALICO_VERSION} -f values.yaml --namespace tigera-operator
 ### #kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/${CALICO_VERSION}/manifests/tigera-operator.yaml
 ### #kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/${CALICO_VERSION}/manifests/custom-resources.yaml

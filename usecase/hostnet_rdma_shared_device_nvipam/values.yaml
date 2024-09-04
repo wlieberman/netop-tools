@@ -21,7 +21,7 @@ rdmaSharedDevicePlugin:
     - name: rdma_shared_device_a
 #     vendors: [15b3],
 #     deviceIDs: [101b],
-      ifNames: [ens1f0np0]
+      ifNames: [ens2f1np1]
 #   - name: rdma_shared_device_b
 #     ifNames: [ens1f1np1]
 #   - name: rdma_shared_device_c
