@@ -58,7 +58,7 @@ worker)
     exit 1
   fi
   # install a node, apply a label to the node
-  ./ops/labelworker.sh ${1}
+  ${NETOP_ROOT_DIR}/ops/labelworker.sh ${1}
   ;;
 debug)
   # debug tools
