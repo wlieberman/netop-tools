@@ -3,7 +3,7 @@
 # pod.yaml configuration file for such a deployment:
 #
 source ${NETOP_ROOT_DIR}/global_ops.cfg
-source ./netop.cfg
+
 NAME=${1}
 shift
 NODE=${1}
