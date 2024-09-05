@@ -7,7 +7,7 @@ if [ "$#" -lt 2 ];then
   echo "example:$0 net-sriov-rdma a b c d e f g h"
   exit 1
 fi
-source ./netop.cfg
+source ./${NETOP_ROOT_DIR}/global_ops.cfg
 NETWORK_NAME=${1}
 shift
 #RESOURCE=`echo ${NETWORK_NAME}|cut -d'-' -f2-99|sed 's/-/_/g'`

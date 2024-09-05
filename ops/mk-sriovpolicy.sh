@@ -7,7 +7,7 @@ if [ "$#" -lt 2 ];then
   echo "example:$0 0000:24:00.0 a"
   exit 1
 fi
-source ./netop.cfg
+source ./${NETOP_ROOT_DIR}/global_ops.cfg
 PCI_DEVICE="${1}"
 shift
 DEV="${1}"

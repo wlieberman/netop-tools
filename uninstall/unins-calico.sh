@@ -2,7 +2,7 @@
 #
 # https://docs.tigera.io/calico/3.25/getting-started/kubernetes/helm
 #
-#source ./netop.cfg
+#source ./${NETOP_ROOT_DIR}/global_ops.cfg
 # Install the Tigera Calico operator and custom resource definitions using the Helm chart:
 kubectl delete -f ./calico/custom-resources.yaml
 helm uninstall calico projectcalico/tigera-operator --namespace tigera-operator

@@ -7,7 +7,7 @@ if [ -z ${NETOP_ROOT_DIR} ];then
   exit 1
 fi
 
-source ${NETOP_ROOT_DIR}/netop.cfg
+source ${NETOP_ROOT_DIR}/${NETOP_ROOT_DIR}/global_ops.cfg
 source ${NETOP_ROOT_DIR}/k8envroot.sh
 
 CMD="${1}"

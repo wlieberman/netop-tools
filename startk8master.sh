@@ -2,7 +2,7 @@
 #
 # restart k8 master
 #
-source ./netop.cfg
+source ./${NETOP_ROOT_DIR}/global_ops.cfg
 cd ./restart
 ./restartk8master.sh
 cd ../install

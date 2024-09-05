@@ -9,7 +9,7 @@ if [ "$#" -lt 1 ];then
 fi
 DEV=${1}
 shift
-source ./netop.cfg
+source ./${NETOP_ROOT_DIR}/global_ops.cfg
 FILE="./Network-Attachment-Definitions-${DEV}.yaml"
 # Copyright (c) NVIDIA Corporation 2023
 # https://github.com/k8snetworkplumbingwg/multus-cni/tree/master/examples#passing-down-device-information

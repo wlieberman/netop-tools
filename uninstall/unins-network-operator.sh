@@ -2,7 +2,7 @@
 #
 # uninstall the network-operator and remove the namespace
 #
-source ./netop.cfg
+source ./${NETOP_ROOT_DIR}/global_ops.cfg
 helm uninstall network-operator -n ${NETOP_NAMESPACE} --no-hooks
 #kubectl delete --force NicClusterPolicy nic-cluster-policy -n ${NETOP_NAMESPACE}
 ##### ./delcrds.sh   # no longer add crds, so nolonger delete

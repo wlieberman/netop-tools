@@ -5,7 +5,7 @@
 #
 # https://catalog.ngc.nvidia.com/orgs/nvidia/teams/cloud-native/helm-charts/network-operator
 #
-source ./netop.cfg
+source ./${NETOP_ROOT_DIR}/global_ops.cfg
 source ./ops/cordon.sh
 cordon
 #../install/ins-netop-chart.sh

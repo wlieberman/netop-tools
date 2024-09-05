@@ -2,7 +2,7 @@
 #
 # pod.yaml configuration file for such a deployment:
 #
-source ./netop.cfg
+source ./${NETOP_ROOT_DIR}/global_ops.cfg
 NAME=${1}
 shift
 DEV=${1}
