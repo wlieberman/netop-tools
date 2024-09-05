@@ -2,10 +2,10 @@
 #
 # create a secrets file for nvstaging
 #
-source ./netop.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 if [ "${PROD_VER}" = "0" ];then
   FILE="/root/.docker/config.json"
-  ../uninstall/delsecret.sh
+  ${NETOP_ROOT_DIR}/uninstall/delsecret.sh
   echo "START"
   docker login --username '$oauthtoken' nvcr.io
   echo "END"

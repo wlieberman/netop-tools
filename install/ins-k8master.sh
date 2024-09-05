@@ -1,43 +1,48 @@
-#!/bin/bash -x
+#!/bin/bash -e
 #
 # install network operator master node
 #
-source ./netop.cfg
+
+if [ -z ${NETOP_ROOT_DIR} ];then
+  echo "Variable NETOP_ROOT_DIR is not set"
+  exit 1
+fi
+
+source ${NETOP_ROOT_DIR}/global_ops.cfg
+source ${NETOP_ROOT_DIR}/k8envroot.sh
+
 CMD="${1}"
 shift
 case "${CMD}" in
 master)
   systemctl mask swap.target # permanently turn off swap
-  ./ins-helm.sh
-  ./ins-k8repo.sh
-  ./ins-go.sh
-  ./ins-k8base.sh
-  ./ins-docker.sh
+  ${NETOP_ROOT_DIR}/install/ins-helm.sh
+  ${NETOP_ROOT_DIR}/install/${HOST_OS}/ins-k8repo.sh
+  ${NETOP_ROOT_DIR}/install/${HOST_OS}/ins-go.sh
+  ${NETOP_ROOT_DIR}/install/${HOST_OS}/ins-k8base.sh
+  ${NETOP_ROOT_DIR}/install/${HOST_OS}/ins-docker.sh
   ;;
 init)
   kubeadm init --pod-network-cidr=${K8CIDR}
-  source ../k8envroot.sh
+  
   # ./fixes/fix config issues
-  ./fixes/fixcrtauth.sh
-  ./fixes/fixcontainerd.sh 
-  ./configcrictl.sh
+  ${NETOP_ROOT_DIR}/install/fixes/fixcrtauth.sh
+  ${NETOP_ROOT_DIR}/install/fixes/fixcontainerd.sh 
+  ${NETOP_ROOT_DIR}/install/configcrictl.sh
   #./ins-multus.sh
   ;;
 calico)
-  source ../k8envroot.sh
-  ./wait-k8sready.sh
-  ./ins-calico.sh
-  ./ins-calicoctl.sh
+  ${NETOP_ROOT_DIR}/install/wait-k8sready.sh
+  ${NETOP_ROOT_DIR}/install/ins-calico.sh
+  ${NETOP_ROOT_DIR}/install/ins-calicoctl.sh
   ;;
 netop)
-  source ../k8envroot.sh
-  ./wait-calicoready.sh
+  ${NETOP_ROOT_DIR}/install/wait-calicoready.sh
   # setup helm charts
-  ./ins-netop-chart.sh
-  ./ins-network-operator.sh
+  ${NETOP_ROOT_DIR}/install/ins-netop-chart.sh
+  ${NETOP_ROOT_DIR}/install/ins-network-operator.sh
   ;;
 app)
-  source ../k8envroot.sh
   #
   # deploy app
   #
@@ -55,7 +60,7 @@ worker)
     exit 1
   fi
   # install a node, apply a label to the node
-  ./ops/labelworker.sh ${1}
+  ${NETOP_ROOT_DIR}/ops/labelworker.sh ${1}
   ;;
 debug)
   # debug tools

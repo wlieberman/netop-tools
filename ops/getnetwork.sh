@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #
-source ./netop.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 echo NetworkAttachmentDefinitions
 kubectl get Network-Attachment-Definitions -A
 echo ${NETOP_NETWORK_TYPE}
@@ -13,6 +13,6 @@ NODES=`kubectl get nodes | grep worker | grep -v SchedulingDisabled | cut -d' ' 
 for NODE in ${NODES};do
   echo "node:${NODE}"
   kubectl describe node ${NODE} | grep rdma
-  ops/checkippool.sh ${NODE}
+  ${NETOP_ROOT_DIR}/ops/checkippool.sh ${NODE}
   kubectl get pods -o=custom-columns='NAME:metadata.name,NODE:spec.nodeName,NETWORK-STATUS:metadata.annotations.k8s\.v1\.cni\.cncf\.io/network-status'  -A  --field-selector spec.nodeName=${NODE}
 done

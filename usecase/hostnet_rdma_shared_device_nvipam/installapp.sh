@@ -2,7 +2,7 @@
 #
 # pod.yaml configuration file for such a deployment:
 #
-source ./netop.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 NAME=${1}
 shift
 DEV=${1}
@@ -33,9 +33,9 @@ spec:
         add: ["IPC_LOCK"]
     resources:
       requests:
-        nvidia.com/${NETOP_RESOURCE}_${DEV}: '1'
+        rdma/${NETOP_RESOURCE}_${DEV}: '1'
       limits:
-        nvidia.com/${NETOP_RESOURCE}_${DEV}: '1'
+        rdma/${NETOP_RESOURCE}_${DEV}: '1'
     command:
     - sh
     - -c

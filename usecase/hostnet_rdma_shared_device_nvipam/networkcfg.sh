@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/bash -e
 #
 # setup the host networks, and make the nvipam ip pool
 #
-source ./netop.cfg
-./ops/mk-hostnet-nvipam-cr.sh ${NETOP_NETWORK_NAME} a b c
+source ${NETOP_ROOT_DIR}/global_ops.cfg
+${NETOP_ROOT_DIR}/ops/mk-hostnet-nvipam-cr.sh ${NETOP_NETWORK_NAME} a
 NETWORKS=$(ls ${NETOP_NETWORK_NAME}*.yaml)
 for NETWORK in ${NETWORKS[@]};do
   kubectl apply -f ./${NETWORK}
@@ -15,5 +15,5 @@ kubectl get  ${NETOP_NETWORK_TYPE}
 #
 # make sure the ip pool is created
 #
-./ops/mk-nvipam.sh
+${NETOP_ROOT_DIR}/ops/mk-nvipam.sh
 kubectl apply -f ippool.yaml

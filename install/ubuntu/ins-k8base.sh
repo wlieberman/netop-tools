@@ -1,12 +1,17 @@
-#!/bin/bash -x
+#!/bin/bash -xe
 #
 # Update the apt package index and install packages needed to use the Kubernetes apt repository:
 #
-source ./netop.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
+
 apt-get update
-apt-get install -y git
-apt-get install -y apt-transport-https ca-certificates curl apt-utils
-apt-get install -y openssh-server vim
+
+apt-get install -y \
+apt-transport-https \
+git \
+ca-certificates \
+curl apt-utils \
+openssh-server vim
 #
 # Download the Google Cloud public signing key:
 #
