@@ -3,8 +3,12 @@
 # setup the host networks, and make the whereabouts ip pool
 #
 source ${NETOP_ROOT_DIR}/global_ops.cfg
-#./ops/mk-hostnet-ipam-cr.sh ${NETOP_NETWORK_NAME} a b c
-${NETOP_ROOT_DIR}/ops/mk-hostnet-ipam-cr.sh ${NETOP_NETWORK_NAME} a b
+source ./netop.cfg
+for DEVDEF in ${NETOP_NETLIST[@]};do
+  NIDX=`echo ${DEVDEF}|cut -d',' -f1`
+  NIDXLST="${NIDXLST} ${NIDX}"
+done
+${NETOP_ROOT_DIR}/ops/mk-hostnet-ipam-cr.sh ${NETOP_NETWORK_NAME} ${NIDXLST}
 NETWORKS=$(ls ${NETOP_NETWORK_NAME}*.yaml)
 for NETWORK in ${NETWORKS[@]};do
   kubectl apply -f ./${NETWORK}
@@ -16,5 +20,5 @@ kubectl get ${NETOP_NETWORK_TYPE}
 #
 # make sure the ip pool is created
 #
-#./ops/mk-whereabouts.sh
-#kubectl apply -f whereabouts.yaml
+${NETOP_ROOT_DIR}/ops/mk-whereabouts.sh
+kubectl apply -f whereabouts.yaml

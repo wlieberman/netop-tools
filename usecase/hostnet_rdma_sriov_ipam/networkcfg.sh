@@ -2,7 +2,7 @@
 #
 # setup the host networks, and make the whereabouts ip pool
 #
-source ${NETOP_ROOT_DIR}/netop.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 #./ops/mk-hostnet-ipam-cr.sh ${NETOP_NETWORK_NAME} a b c
 ./ops/mk-hostnet-ipam-cr.sh ${NETOP_NETWORK_NAME} a b
 NETWORKS=$(ls ${NETOP_NETWORK_NAME}*.yaml)

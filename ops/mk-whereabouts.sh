@@ -2,7 +2,7 @@
 #
 # use whereabouts install of ipam for small clusters
 #
-source ./netop.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 cat << HEREDOC > ./whereabouts.yaml
 apiVersion: mellanox.com/v1alpha1
 kind: ${NETOP_NETWORK_TYPE}

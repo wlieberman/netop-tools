@@ -56,7 +56,7 @@ crictl pull --creds '$oauthtoken':${NGC_API_KEY} nvcr.io/nvstaging/mellanox/netw
 # I’m using namespace nvidia-network-operator
 # I’m using calico for my secondary network plugin.
 
-# netop.cfg                    # set my env variable
+# ${NETOP_ROOT_DIR}/global_ops.cfg                    # set my env variable
 # cordon.sh             # cordon the worker nodes
 # netchartlinks.sh  # set the symbolic links which you did manual above
 # applycrds.sh        # apply the cluster resource definitions
@@ -64,7 +64,7 @@ crictl pull --creds '$oauthtoken':${NGC_API_KEY} nvcr.io/nvstaging/mellanox/netw
 #!/bin/bash -x
 #
 #
-source ./netop.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 source ./cordon.sh
 source ./netchartlnks.sh
 cordon
