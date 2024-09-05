@@ -20,20 +20,8 @@ rdmaSharedDevicePlugin:
   deploy: true
   resources:
     - name: rdma_shared_device_a
-      vendors: [15b3],
-      deviceIDs: [101b],
-      rdmaHcaMax: 63,
+      vendors: [15b3]
       ifNames: [ens1f0np0]
-    - name: rdma_shared_device_b
-      vendors: [15b3],
-      deviceIDs: [101b],
-      rdmaHcaMax: 63,
-      ifNames: [ens1f1np1]
-    - name: rdma_shared_device_c
-      vendors: [15b3],
-      deviceIDs: [101b],
-      rdmaHcaMax: 63,
-      ifNames: [ens2np0]
 
 sriovDevicePlugin:
   deploy: false

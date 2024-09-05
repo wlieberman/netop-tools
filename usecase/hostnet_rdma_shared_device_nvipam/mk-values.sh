@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #
-source ./${NETOP_ROOT_DIR}/global_ops.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 cat <<HEREDOC1>./values.yaml
 nfd:
   enabled: true

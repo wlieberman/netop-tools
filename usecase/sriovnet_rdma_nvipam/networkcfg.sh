@@ -8,7 +8,7 @@
 # for example:
 # a_0 a_1 b_0 b_1 would define 4 networks using 2 dual port nics
 # a b c d e f g would define 8 network for 8 nics.
-source ./${NETOP_ROOT_DIR}/global_ops.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 #
 # set the SriovNetwork configuration files
 # sriov policy file

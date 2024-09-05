@@ -3,7 +3,7 @@
 # the flow for creating a dev environment
 #
 #
-source ./${NETOP_ROOT_DIR}/global_ops.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 DEVPOLICY="nic-cluster-policy.yaml"
 # get the current policy if not defined
 if [ ! -f ${DEVPOLICY} ];then

@@ -2,7 +2,7 @@
 #
 # pod.yaml configuration file for such a deployment:
 #
-source ./${NETOP_ROOT_DIR}/global_ops.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 source ./netop.cfg
 NAME=${1}
 shift
@@ -42,9 +42,9 @@ for DEVDEF in ${NETOP_NETLIST[@]};do
   NIDX=`echo ${DEVDEF}|cut -d',' -f1`
 cat << HEREDOC2 >> ./${NAME}.yaml
       requests:
-        nvidia.com/${NETOP_RESOURCE}_${NIDX}: '1'
+        rdma/${NETOP_RESOURCE}_${NIDX}: '1'
       limits:
-        nvidia.com/${NETOP_RESOURCE}_${NIDX}: '1'
+        rdma/${NETOP_RESOURCE}_${NIDX}: '1'
 HEREDOC2
 done
 cat << HEREDOC3 >> ./${NAME}.yaml

@@ -16,7 +16,7 @@ if [ "$#" -lt 2 ];then
   echo "example:$0 hostnet-rdma-shared-device a b c d e f g h"
   exit 1
 fi
-source ./${NETOP_ROOT_DIR}/global_ops.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 NETWORK_NAME=${1}
 shift
 RESOURCE=`echo ${NETWORK_NAME}|cut -d'-' -f2-99|sed 's/-/_/g'`

@@ -5,12 +5,12 @@
 #
 # https://catalog.ngc.nvidia.com/orgs/nvidia/teams/cloud-native/helm-charts/network-operator
 #
-source ./${NETOP_ROOT_DIR}/global_ops.cfg
-source ./ops/cordon.sh
+source ${NETOP_ROOT_DIR}/global_ops.cfg
+source ${NETOP_ROOT_DIR}/ops/cordon.sh
 cordon
 #../install/ins-netop-chart.sh
 pushd .
-cd ./netop-chart
+cd ${NETOP_ROOT_DIR}/release/${NETOP_VERSION}/netop-chart
 ## if [ ! -d "network-operator" ];then
 ##  if [ "${PROD_VER}" = "1" ];tehn
 ##  else
@@ -28,9 +28,8 @@ popd
 #
 # the yaml file needs to be the custom network operator configuration to overider the defaults
 #
-cd ./netop-chart
-pwd
+cd ${NETOP_ROOT_DIR}/release/${NETOP_VERSION}/netop-chart
 #helm upgrade -n ${NETOP_NAMESPACE} network-operator network-operator -f ./network-operator-values.yaml
-#helm upgrade -n ${NETOP_NAMESPACE} network-operator network-operator -f ../../../values.yaml
-helm upgrade -n ${NETOP_NAMESPACE} network-operator nvidia/network-operator -f ../../../values.yaml
+#helm upgrade -n ${NETOP_NAMESPACE} network-operator network-operator -f ${NETOP_ROOT_DIR}/usecase/${USECASE}/values.yaml
+helm upgrade -n ${NETOP_NAMESPACE} network-operator nvidia/network-operator -f ${NETOP_ROOT_DIR}/usecase/${USECASE}/values.yaml
 uncordon

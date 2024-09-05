@@ -64,7 +64,7 @@ crictl pull --creds '$oauthtoken':${NGC_API_KEY} nvcr.io/nvstaging/mellanox/netw
 #!/bin/bash -x
 #
 #
-source ./${NETOP_ROOT_DIR}/global_ops.cfg
+source ${NETOP_ROOT_DIR}/global_ops.cfg
 source ./cordon.sh
 source ./netchartlnks.sh
 cordon
