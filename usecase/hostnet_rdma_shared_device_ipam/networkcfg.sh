@@ -20,5 +20,5 @@ kubectl get ${NETOP_NETWORK_TYPE}
 #
 # make sure the ip pool is created
 #
-${NETOP_ROOT_DIR}/ops/mk-whereabouts.sh
-kubectl apply -f whereabouts.yaml
+#${NETOP_ROOT_DIR}/ops/mk-whereabouts.sh
+#kubectl apply -f whereabouts.yaml
