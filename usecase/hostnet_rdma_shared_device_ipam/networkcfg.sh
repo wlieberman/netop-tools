@@ -3,7 +3,7 @@
 # setup the host networks, and make the whereabouts ip pool
 #
 source ${NETOP_ROOT_DIR}/global_ops.cfg
-source ./netop.cfg
+
 for DEVDEF in ${NETOP_NETLIST[@]};do
   NIDX=`echo ${DEVDEF}|cut -d',' -f1`
   NIDXLST="${NIDXLST} ${NIDX}"
