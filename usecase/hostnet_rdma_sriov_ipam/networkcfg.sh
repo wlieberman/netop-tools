@@ -4,10 +4,10 @@
 #
 source ${NETOP_ROOT_DIR}/global_ops.cfg
 
-${NETOP_ROOT_DIR}/ops/mk-hostnet-ipam-cr.sh ${NETOP_NETWORK_NAME} a b
-NETWORKS=$(ls ${NETOP_NETWORK_NAME}*.yaml)
-for NETWORK in ${NETWORKS[@]};do
-  kubectl apply -f ./${NETWORK}
+for NIDXDEF in ${NETOP_NETLIST[@]};do
+  NIDX=`echo ${NIDXDEF}|cut -d',' -f1`
+  ${NETOP_ROOT_DIR}/ops/mk-hostnet-ipam-cr.sh ${NIDX}
+  kubectl apply -f ${NETOP_NETWORK_NAME}-${NIDX}.yaml
 done
 #
 # verify the network devices
