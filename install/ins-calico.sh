@@ -34,7 +34,7 @@ kubectl create namespace tigera-operator
 helm repo add projectcalico https://docs.tigera.io/calico/charts
 
 # Install the Tigera Calico operator and custom resource definitions using the Helm chart:
-helm install calico projectcalico/tigera-operator --namespace tigera-operator
+helm install calico projectcalico/tigera-operator --version ${CALICO_VERSION} --namespace tigera-operator
 
 #
 # apply the custom resources
