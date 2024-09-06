@@ -11,34 +11,32 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-if [ "$#" -lt 2 ];then
-  echo "usage:$0 {NETWORK_NAME} {NETWORK_DEV_LIST}"
-  echo "example:$0 hostnet-rdma-shared-device a b c d e f g h"
+source ${NETOP_ROOT_DIR}/global_ops.cfg
+if [ "$#" -lt 1 ];then
+  echo "usage:$0 {NETWORK_DEV_LIST}"
+  echo "example:$0 a b c d e f g h"
   exit 1
 fi
-source ${NETOP_ROOT_DIR}/global_ops.cfg
-NETWORK_NAME=${1}
-shift
-RESOURCE=`echo ${NETWORK_NAME}|cut -d'-' -f2-99|sed 's/-/_/g'`
 for DEV in ${*};do
-cat <<EOF> "${NETWORK_NAME}-${DEV}"-cr.yaml
+cat <<EOF> "${NETOP_NETWORK_NAME}-${DEV}"-cr.yaml
 apiVersion: mellanox.com/v1alpha1
 kind: "${NETOP_NETWORK_TYPE}"
 metadata:
-  name: "${NETWORK_NAME}-${DEV}"
+  name: "${NETOP_NETWORK_NAME}-${DEV}"
+  namespace: ${NETOP_NAMESPACE}
 spec:
   networkNamespace: "${NETOP_APP_NAMESPACE}"
-  resourceName: "${RESOURCE}_${DEV}"
+  resourceName: "${NETOP_RESOURCE}_${DEV}"
   ipam: |
     {
       "type": "${IPAM_TYPE}",
       "datastore": "kubernetes",
       "kubernetes": {
-        "kubeconfig": "/etc/cni/net.d/whereabouts.d/whereabouts.kubeconfig"
+        "kubeconfig": "/etc/cni/net.d/${IPAM_TYPE}.d/${IPAM_TYPE}.kubeconfig"
       },
       "range": "${NETOP_NETWORK_RANGE}",
       "exclude": [],
-      "log_file": "/var/log/whereabouts.log",
+      "log_file": "/var/log/${IPAM_TYPE}.log",
       "log_level": "info"
     }
 EOF
