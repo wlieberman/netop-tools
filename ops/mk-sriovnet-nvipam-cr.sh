@@ -2,26 +2,23 @@
 #
 # configure the secondary network
 #
-if [ "$#" -lt 2 ];then
-  echo "usage:$0 {NETWORK_NAME} {NETWORK_DEV_LIST}"
-  echo "example:$0 net-sriov-rdma a b c d e f g h"
+source ${NETOP_ROOT_DIR}/global_ops.cfg
+if [ "$#" -lt 1 ];then
+  echo "usage:$0 {NETWORK_NIDX_LIST}"
+  echo "example:$0 a b c d e f g h"
   exit 1
 fi
-source ${NETOP_ROOT_DIR}/global_ops.cfg
-NETWORK_NAME=${1}
-shift
-#RESOURCE=`echo ${NETWORK_NAME}|cut -d'-' -f2-99|sed 's/-/_/g'`
-for DEV in ${*};do
-cat <<HEREDOC> "${NETWORK_NAME}-${DEV}"-cr.yaml
+for NIDX in ${*};do
+cat <<HEREDOC> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
 apiVersion: sriovnetwork.openshift.io/v1
 kind: ${NETOP_NETWORK_TYPE}
 metadata:
-  name: "${NETOP_NETWORK_NAME}-${DEV}"
+  name: "${NETOP_NETWORK_NAME}-${NIDX}"
   namespace: ${NETOP_NAMESPACE}
 spec:
   #vlan: ${NETOP_NETWORK_VLAN}
   networkNamespace: "${NETOP_APP_NAMESPACE}"
-  resourceName: "${NETOP_RESOURCE}_${DEV}"
+  resourceName: "${NETOP_RESOURCE}_${NIDX}"
   ipam: |
     {
       "datastore": "kubernetes",
