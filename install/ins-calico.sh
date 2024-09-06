@@ -3,12 +3,12 @@
 # https://docs.tigera.io/calico/3.25/getting-started/kubernetes/helm
 #
 source ${NETOP_ROOT_DIR}/global_ops.cfg
-DIR="${NETOP_ROOT_DIR}/release/calico-${CALICO_VERSION}"
-if [ ! -d ${DIR} ];then
-  mkdir -p ${DIR}
+CALICO_DIR="${NETOP_ROOT_DIR}/release/calico-${CALICO_VERSION}"
+if [ ! -d ${CALICO_DIR} ];then
+  mkdir -p ${CALICO_DIR}
 fi
 
-cd ${DIR}
+cd ${CALICO_DIR}
 if [ ! -f ./tigera-operator.yaml ];then
   curl -o ./tigera-operator.yaml https://raw.githubusercontent.com/projectcalico/calico/${CALICO_VERSION}/manifests/tigera-operator.yaml
 fi
