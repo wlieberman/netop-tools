@@ -71,13 +71,10 @@ apt-get install -y kubectl kubelet kubeadm jq
 #
 # install default plugins
 #
-PLUGINS="cni-plugins-linux-amd64-v0.8.6.tgz"
-mkdir -p /opt/cni/bin
-pushd .
-cd /opt/cni/bin
-curl -L --insecure -O https://github.com/containernetworking/plugins/releases/download/v0.8.6/${PLUGINS}
-tar -xvf ./${PLUGINS}
-popd
+PLUGINS="cni-plugins-linux-amd64-${CNIPLUGINS_VERSION}.tgz"
+[ ! -d /opt/cni/bin ] && mkdir -p /opt/cni/bin
+curl -L --insecure -o - https://github.com/containernetworking/plugins/releases/download/${CNIPLUGINS_VERSION}/${PLUGINS} | tar xfz - -C /opt/cni/bin
+
 #
 # config details here:
 # https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/

@@ -1,18 +1,17 @@
-#!/bin/bash -x
+#!/bin/bash -xe
 #
 # install packages needed to use the Kubernetes repository:
 # https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/#install-using-native-package-management
 #
 # install default plugins
 #
+source ${NETOP_ROOT_DIR}/global_ops.cfg
+
 function cni()
 {
-  PLUGINS="cni-plugins-linux-amd64-v0.8.6.tgz"
-  mkdir -p /opt/cni/bin
-  pushd .
-  cd /opt/cni/bin
-  curl -L --insecure -O https://github.com/containernetworking/plugins/releases/download/v0.8.6/${PLUGINS}
-  tar -xvf ./${PLUGINS}
+  PLUGINS="cni-plugins-linux-amd64-${CNIPLUGINS_VERSION}.tgz"
+  [ ! -d /opt/cni/bin ] && mkdir -p /opt/cni/bin
+  curl -L --insecure -o - https://github.com/containernetworking/plugins/releases/download/${CNIPLUGINS_VERSION}/${PLUGINS} | tar xfz - -C /opt/cni/bin
   popd
 }
 # Set SELinux in permissive mode (effectively disabling it)
