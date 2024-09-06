@@ -11,35 +11,27 @@
 source ${NETOP_ROOT_DIR}/global_ops.cfg
 #
 # set the SriovNetwork configuration files
-# sriov policy file
 # sriov node policy file
 # NetworkAttachmentDefinition file
+# sriov network CRD file
 #
-# network a on NIC 0000:23:00.0
-${NETOP_ROOT_DIR}/ops/mk-sriovpolicy.sh 0000:23:00.0 a
-kubectl apply -f sriovnetwork-node-policy-a.yaml
-${NETOP_ROOT_DIR}/ops/mk-network-attachment.sh a
-kubectl apply -f "./Network-Attachment-Definitions-a.yaml"
-# network b on 0000:24:00.0
-${NETOP_ROOT_DIR}/ops/mk-sriovpolicy.sh 0000:24:00.0 b
-kubectl apply -f sriovnetwork-node-policy-b.yaml
-${NETOP_ROOT_DIR}/ops/mk-network-attachment.sh b
-kubectl apply -f "./Network-Attachment-Definitions-b.yaml"
-#
-# define the custom resource by network using the same network labels
-#
-# loop through and apply the network CRD's
-${NETOP_ROOT_DIR}/ops/mk-sriovnet-nvipam-cr.sh ${NETOP_NETWORK_NAME} a b
-NETWORKS=$(ls ${NETOP_NETWORK_NAME}*.yaml)
-for NETWORK in ${NETWORKS[@]};do
-  kubectl apply -f ./${NETWORK}
+
+for DEVDEF in ${NETOP_NETLIST[@]};do
+  NIDX=`echo ${DEVDEF}|cut -d',' -f1`
+  NDEV=`echo ${DEVDEF}|cut -d',' -f4-20`
+  ${NETOP_ROOT_DIR}/ops/mk-sriovpolicy.sh ${NIDX} ${NDEV}
+  kubectl apply -f sriovnetwork-node-policy-${NIDX}.yaml
+  ${NETOP_ROOT_DIR}/ops/mk-network-attachment.sh ${NIDX}
+  kubectl apply -f "./Network-Attachment-Definitions-${NIDX}.yaml"
+  ${NETOP_ROOT_DIR}/ops/mk-sriovnet-nvipam-cr.sh ${NIDX}
+  kubectl apply -f ${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml
 done
 #
-# create the nv-ipam ip pool
+# make sure the ip pool is created
 #
 ${NETOP_ROOT_DIR}/ops/mk-nvipam.sh
 kubectl apply -f ippool.yaml
-#
+
 # verify the network devices
 #
 ${NETOP_ROOT_DIR}/ops/getnetwork.sh
