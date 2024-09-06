@@ -4,7 +4,6 @@ plugins
 release
 calico
 netop-chart
-netop.cfg
 uc
 values.yaml
 install/insgo.sh
