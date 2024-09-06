@@ -23,10 +23,7 @@ for DEVDEF in ${NETOP_NETLIST[@]};do
   kubectl apply -f sriovnetwork-node-policy-${NIDX}.yaml
   ${NETOP_ROOT_DIR}/ops/mk-network-attachment.sh ${NIDX}
   kubectl apply -f "./Network-Attachment-Definitions-${NIDX}.yaml"
-  NIDXLST="${NIDXLST} ${NIDX}"
-done
-${NETOP_ROOT_DIR}/ops/mk-hostnet-nvipam-cr.sh ${NETOP_NETWORK_NAME} ${NIDXLST}
-for NIDX in ${NIDXLST};do
+  ${NETOP_ROOT_DIR}/ops/mk-sriovnet-ipam-cr.sh ${NIDX}
   kubectl apply -f ${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml
 done
 #
