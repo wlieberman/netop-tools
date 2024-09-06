@@ -6,12 +6,8 @@ source ${NETOP_ROOT_DIR}/global_ops.cfg
 
 for DEVDEF in ${NETOP_NETLIST[@]};do
   NIDX=`echo ${DEVDEF}|cut -d',' -f1`
-  NIDXLST="${NIDXLST} ${NIDX}"
-done
-${NETOP_ROOT_DIR}/ops/mk-hostnet-nvipam-cr.sh ${NETOP_NETWORK_NAME} ${NIDXLST}
-NETWORKS=$(ls ${NETOP_NETWORK_NAME}*.yaml)
-for NETWORK in ${NETWORKS[@]};do
-  kubectl apply -f ./${NETWORK}
+  ${NETOP_ROOT_DIR}/ops/mk-hostnet-nvipam-cr.sh ${NIDX}
+  kubectl apply -f ${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml)
 done
 #
 # verify the network devices
