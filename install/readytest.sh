@@ -11,7 +11,7 @@ function nsReady()
       RCNT=`kubectl get pods -n ${NS} | tr -s [:space:] | cut -d' ' -f1,3 | grep "${NAME}" | grep -c Running`
       if [ "${RCNT}" -lt "${CNT}" ];then
         READY=0
-        echo "Waiting for $CNT instanses of pod $NAME in $NS namespace. Currently ready: $RCNT"
+        echo "Waiting for $CNT instances of pod $NAME in $NS namespace. Currently ready: $RCNT"
         break
       fi
     done

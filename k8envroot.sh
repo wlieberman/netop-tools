@@ -1,4 +1,5 @@
 export KUBECONFIG=/etc/kubernetes/admin.conf
 swapoff -a
-export NETOP_ROOT_DIR=$(pwd)
-
+if [ "${NETOP_ROOT_DIR}" = "" ];then
+  export NETOP_ROOT_DIR=$(pwd)
+fi
