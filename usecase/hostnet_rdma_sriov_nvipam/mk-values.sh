@@ -6,7 +6,7 @@ cat <<HEREDOC1>./values.yaml
 nfd:
   enabled: true
 sriovNetworkOperator:
-  enabled: true
+  enabled: false
 HEREDOC1
 if [ "${PROD_VER}" = "0" ];then
 cat <<HEREDOC2>>./values.yaml
@@ -16,10 +16,18 @@ cat <<HEREDOC2>>./values.yaml
 imagePullSecrets: [ngc-image-secret]   # <- specify your created pull secrets for ngc private repo
 HEREDOC2
 fi
+if [ "${IPAM_TYPE}" = "nv-ipam" ];then
+  NVIPAMVAL=true
+  IPAMVAL=false
+else
+  NVIPAMVAL=false
+  IPAMVAL=true
+fi
 cat <<HEREDOC3>>./values.yaml
+# NicClusterPolicy CR values
 deployCR: true
 nvIpam:
-  deploy: true
+  deploy: ${NVIPAMVAL}
 
 ofedDriver:
   deploy: true
@@ -34,8 +42,33 @@ rdmaSharedDevicePlugin:
   deploy: false
 
 sriovDevicePlugin:
-  deploy: false
-
+  deploy: true
+  resources:
+HEREDOC3
+for DEVDEF in ${NETOP_NETLIST[@]};do
+  NIDX=`echo ${DEVDEF}|cut -d',' -f1`
+  DEVICEID=`echo ${DEVDEF}|cut -d',' -f2`
+  NETOP_HCAMAX=`echo ${DEVDEF}|cut -d',' -f3`
+  DEVNAMES=`echo ${DEVDEF}|cut -d',' -f4-12`
+echo "    - name: ${NETOP_RESOURCE}_${NIDX}" >>./values.yaml
+###  if [ "${NETOP_VENDOR}" != "" ];then
+###echo "      vendors: [${NETOP_VENDOR}]" >>./values.yaml
+###  fi
+###  if [ "${DEVICEID}" != "" ];then
+###echo "      deviceIDs: [${DEVICEID}]" >>./values.yaml
+###  fi
+###  if [ "${NETOP_HCAMAX}" != "" ];then
+###echo "      rdmaHcaMax: ${NETOP_HCAMAX}" >>./values.yaml
+###  fi
+  if [ "${DEVNAMES}" != "" ];then
+    if [[ $string == *:* ]]; then
+echo "      pciAddresses: [\"${DEVNAMES}\"]" >>./values.yaml
+    else
+echo "      ifNames: [\"${DEVNAMES}\"]" >>./values.yaml
+    fi
+  fi
+done
+cat <<HEREDOC4>>./values.yaml
 secondaryNetwork:
   deploy: true
   multus:
@@ -43,5 +76,5 @@ secondaryNetwork:
   cniPlugins:
     deploy: true
   ipamPlugin:
-    deploy: false
-HEREDOC3
+    deploy: ${IPAMVAL}
+HEREDOC4
