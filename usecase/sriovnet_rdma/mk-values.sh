@@ -16,10 +16,18 @@ cat <<HEREDOC2>>./values.yaml
 imagePullSecrets: [ngc-image-secret]   # <- specify your created pull secrets for ngc private repo
 HEREDOC2
 fi
+if [ "${IPAM_TYPE}" = "nv-ipam" ];then
+  NVIPAMVAL=true
+  IPAMVAL=false
+else
+  NVIPAMVAL=false
+  IPAMVAL=true
+fi
 cat <<HEREDOC3>>./values.yaml
+# NicClusterPolicy CR values
 deployCR: true
 nvIpam:
-  deploy: true
+  deploy: ${NVIPAMVAL}
 
 ofedDriver:
   deploy: true
@@ -35,7 +43,6 @@ rdmaSharedDevicePlugin:
 
 sriovDevicePlugin:
   deploy: false
-
 secondaryNetwork:
   deploy: true
   multus:
@@ -43,5 +50,5 @@ secondaryNetwork:
   cniPlugins:
     deploy: true
   ipamPlugin:
-    deploy: false
+    deploy: ${IPAMVAL}
 HEREDOC3

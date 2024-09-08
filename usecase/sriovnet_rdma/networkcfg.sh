@@ -1,19 +1,14 @@
 #!/bin/bash -x
 #
-# setup the host networks, and make the nvipam ip pool
+# setup the host networks, and make the ip pool
 # typically in a GPU/NIC system you'll deploy multiple parallel 2ndary networks.
 #
-# in this example we are defining 2 networks a and b
-# these are arbritary strings
-# for example:
-# a_0 a_1 b_0 b_1 would define 4 networks using 2 dual port nics
-# a b c d e f g would define 8 network for 8 nics.
 source ${NETOP_ROOT_DIR}/global_ops.cfg
 #
 # set the SriovNetwork configuration files
-# sriov node policy file
-# NetworkAttachmentDefinition file
-# sriov network CRD file
+#   sriov node policy file
+#   NetworkAttachmentDefinition file
+#   sriov network CRD file
 #
 
 for DEVDEF in ${NETOP_NETLIST[@]};do
@@ -23,14 +18,24 @@ for DEVDEF in ${NETOP_NETLIST[@]};do
   kubectl apply -f sriovnetwork-node-policy-${NIDX}.yaml
   ${NETOP_ROOT_DIR}/ops/mk-network-attachment.sh ${NIDX}
   kubectl apply -f "./Network-Attachment-Definitions-${NIDX}.yaml"
-  ${NETOP_ROOT_DIR}/ops/mk-sriovnet-nvipam-cr.sh ${NIDX}
+  if [ "${IPAM_TYPE}" = "nv-ipam" ];then
+    ${NETOP_ROOT_DIR}/ops/mk-sriovnet-nvipam-cr.sh ${NIDX}
+  else
+    ${NETOP_ROOT_DIR}/ops/mk-sriovnet-ipam-cr.sh ${NIDX}
+  fi
   kubectl apply -f ${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml
 done
 #
 # make sure the ip pool is created
 #
-${NETOP_ROOT_DIR}/ops/mk-nvipam.sh
-kubectl apply -f ippool.yaml
+if [ "${IPAM_TYPE}" = "nv-ipam" ];then
+  ${NETOP_ROOT_DIR}/ops/mk-nvipam.sh
+  kubectl apply -f ippool.yaml
+fi
+# make sure the ip pool is created
+#
+#${NETOP_ROOT_DIR}/ops/mk-whereabouts.sh
+#kubectl apply -f whereabouts.yaml
 
 # verify the network devices
 #
