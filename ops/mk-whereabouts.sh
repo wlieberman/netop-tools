@@ -1,9 +1,9 @@
 #!/bin/bash -x
 #
-# use whereabouts install of ipam for small clusters
+# use ${IPAM_TYPE} install of ipam for small clusters
 #
 source ${NETOP_ROOT_DIR}/global_ops.cfg
-cat << HEREDOC > ./whereabouts.yaml
+cat << HEREDOC > ./${IPAM_TYPE}.yaml
 apiVersion: mellanox.com/v1alpha1
 kind: ${NETOP_NETWORK_TYPE}
 metadata:
@@ -16,12 +16,12 @@ spec:
       "type": "${IPAM_TYPE}",
       "datastore": "kubernetes",
       "kubernetes": {
-        "kubeconfig": "/etc/cni/net.d/whereabouts.d/whereabouts.kubeconfig"
+        "kubeconfig": "/etc/cni/net.d/${IPAM_TYPE}.d/${IPAM_TYPE}.kubeconfig"
       },
       "range": "${NETOP_NETWORK_RANGE}",
       "exclude": [],
-      "log_file" : "/var/log/whereabouts.log",
+      "log_file" : "/var/log/${IPAM_TYPE}.log",
       "log_level" : "info"
     }
 HEREDOC
-cat ./whereabouts.yaml
+cat ./${IPAM_TYPE}.yaml
