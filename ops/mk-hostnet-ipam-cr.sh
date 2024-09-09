@@ -38,7 +38,7 @@ spec:
       "exclude": [],
       "log_file": "/var/log/${IPAM_TYPE}.log",
       "log_level": "info"
-      # "gateway": "${NETOP_NETWORK_GW}" #may need to set depending on fabric design
     }
 EOF
+# "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design
 done
