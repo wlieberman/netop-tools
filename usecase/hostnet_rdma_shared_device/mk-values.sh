@@ -48,24 +48,43 @@ for DEVDEF in ${NETOP_NETLIST[@]};do
   DEVICEID=`echo ${DEVDEF}|cut -d',' -f2`
   NETOP_HCAMAX=`echo ${DEVDEF}|cut -d',' -f3`
   DEVNAMES=`echo ${DEVDEF}|cut -d',' -f4-12`
+  DEVNAMES=`echo ${DEVNAMES} | sed 's/,/","/g'`
 echo "    - name: ${NETOP_RESOURCE}_${NIDX}" >>./values.yaml
-###  if [ "${NETOP_VENDOR}" != "" ];then
-###echo "      vendors: [${NETOP_VENDOR}]" >>./values.yaml
-###  fi
-###  if [ "${DEVICEID}" != "" ];then
-###echo "      deviceIDs: [${DEVICEID}]" >>./values.yaml
-###  fi
-###  if [ "${NETOP_HCAMAX}" != "" ];then
-###echo "      rdmaHcaMax: ${NETOP_HCAMAX}" >>./values.yaml
-###  fi
+  if [ "${NETOP_VENDOR}" != "" ];then
+echo "      vendors: [${NETOP_VENDOR}]" >>./values.yaml
+  fi
+  if [ "${DEVICEID}" != "" ];then
+echo "      deviceIDs: [${DEVICEID}]" >>./values.yaml
+  fi
+  if [ "${NETOP_HCAMAX}" != "" ];then
+echo "      rdmaHcaMax: ${NETOP_HCAMAX}" >>./values.yaml
+  fi
   if [ "${DEVNAMES}" != "" ];then
-    if [[ $string == *:* ]]; then
+    if [[ ${DEVNAMES} == *:* ]]; then
       echo "PCIe:BFD device id not supported by rdmaSharedDevicePlugin"
     else
-echo "      ifNames: [${DEVNAMES}]" >>./values.yaml
+echo "      ifNames: [\"${DEVNAMES}\"]" >>./values.yaml
+echo "      linkTypes: [\"ether\"]" >>./values.yaml
     fi
   fi
 done
+# config: |
+#   {
+#     "configList": [
+#       {
+#         "resourceName": "rdma_shared_device_a",
+#         "resourcePrefix": "nvidia.com",
+#         "rdmaHcaMax": 70,
+#         "selectors": {
+#           "vendors": [],
+#           "deviceIDs": [],
+#           "drivers": [],
+#           "ifNames": ["ens1f0np0"],
+#           "linkTypes": ["ether"]
+#         }
+#       }
+#     ]
+#   }
 cat <<HEREDOC4>>./values.yaml
 
 sriovDevicePlugin:
