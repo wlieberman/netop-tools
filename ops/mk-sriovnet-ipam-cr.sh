@@ -30,6 +30,7 @@ spec:
       "exclude": [],
       "log_file": "/var/log/${IPAM_TYPE}.log",
       "log_level": "info"
+      # "gateway": "${NETOP_NETWORK_GW}" #may need to set depending on fabric design
     }
 HEREDOC
 #kubectl get sriovnetwork -A
