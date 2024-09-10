@@ -11,34 +11,41 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# https://github.com/Mellanox/network-operator/tree/master/example/crs
+#
 source ${NETOP_ROOT_DIR}/global_ops.cfg
 if [ "$#" -lt 1 ];then
-  echo "usage:$0 {NETWORK_DEV_LIST}"
-  echo "example:$0 a b c d e f g h"
+  echo "usage:$0 ${NETWORK_MASTER} {NETWORK IDX}"
+  echo "example:$0 ens1f0np0 a"
   exit 1
 fi
-for DEV in ${*};do
-cat <<EOF> "${NETOP_NETWORK_NAME}-${DEV}"-cr.yaml
+NDEV=${1}
+shift
+NIDX=${1}
+shift
+cat <<EOF> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
 apiVersion: mellanox.com/v1alpha1
-kind: "${NETOP_NETWORK_TYPE}"
+kind: ${NETOP_NETWORK_TYPE}
 metadata:
-  name: "${NETOP_NETWORK_NAME}-${DEV}"
+  name: ${NETOP_NETWORK_NAME}-${NIDX}
   namespace: ${NETOP_NAMESPACE}
 spec:
   networkNamespace: "${NETOP_APP_NAMESPACE}"
-  resourceName: "${NETOP_RESOURCE}_${DEV}"
+  master: "${NDEV}"
+  mode: "bridge"
+  mtu: 1500
   ipam: |
     {
       "type": "${IPAM_TYPE}",
       "datastore": "kubernetes",
       "kubernetes": {
-        "kubeconfig": "/etc/cni/net.d/${IPAM_TYPE}.d/${IPAM_TYPE}.kubeconfig"
+        "kubeconfig": "/etc/cni/net.d/whereabouts.d/whereabouts.kubeconfig"
       },
       "range": "${NETOP_NETWORK_RANGE}",
       "exclude": [],
-      "log_file": "/var/log/${IPAM_TYPE}.log",
-      "log_level": "info"
+      "log_file" : "/var/log/whereabouts.log",
+      "log_level" : "info",
     }
 EOF
 # "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design
-done

@@ -32,6 +32,7 @@ spec:
       "log_level": "info"
     }
 HEREDOC
+# "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design
 #kubectl get sriovnetwork -A
 #kubectl -n ${NETOP_NAMESPACE} get sriovnetworknodestates.sriovnetwork.openshift.io -o yaml
 #kubectl get pod -n ${NETOP_NAMESPACE} | grep sriov
