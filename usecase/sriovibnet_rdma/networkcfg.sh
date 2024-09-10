@@ -14,9 +14,9 @@ source ${NETOP_ROOT_DIR}/global_ops.cfg
 for DEVDEF in ${NETOP_NETLIST[@]};do
   NIDX=`echo ${DEVDEF}|cut -d',' -f1`
   NDEV=`echo ${DEVDEF}|cut -d',' -f4-20`
-  ${NETOP_ROOT_DIR}/ops/mk-sriovibpolicy.sh ${NIDX} ${NDEV}
-  kubectl apply -f sriovibnetwork-node-policy-${NIDX}.yaml
-  ${NETOP_ROOT_DIR}/ops/mk-sriovib-network-attachment.sh ${NIDX}
+  ${NETOP_ROOT_DIR}/ops/mk-sriovibnet-node-policy.sh ${NIDX} ${NDEV}
+  kubectl apply -f sriovibnet-node-policy-${NIDX}.yaml
+  ${NETOP_ROOT_DIR}/ops/mk-sriovibnet-network-attachment.sh ${NIDX}
   kubectl apply -f "./Network-Attachment-Definitions-${NIDX}.yaml"
   if [ "${IPAM_TYPE}" = "nv-ipam" ];then
     ${NETOP_ROOT_DIR}/ops/mk-sriovibnet-nvipam-cr.sh ${NIDX}

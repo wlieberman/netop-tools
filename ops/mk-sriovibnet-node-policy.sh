@@ -3,7 +3,7 @@
 # https://github.com/k8snetworkplumbingwg/sriov-network-operator/tree/master
 #
 if [ "$#" -lt 2 ];then
-  echo "usage:$0 {NETWORK_NDIX} {PCI_DEVICE_LST}
+  echo "usage:$0 {NETWORK_NDIX} {PCI_DEVICE_LST}"
   echo "example:$0 a 0000:24:00.0"
   exit 1
 fi

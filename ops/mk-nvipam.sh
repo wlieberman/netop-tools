@@ -5,7 +5,7 @@
 source ${NETOP_ROOT_DIR}/global_ops.cfg
 function nv_ippool()
 {
-cat <<POOLEOF > ./ippool.yaml
+cat <<POOLHEREDOC > ./ippool.yaml
 apiVersion: nv-ipam.nvidia.com/v1alpha1
 kind: IPPool
 metadata:
@@ -21,11 +21,11 @@ spec:
     - matchExpressions:
         - key: node-role.kubernetes.io/worker
           operator: Exists
-POOLEOF
+POOLHEREDOC
 }
 function configmap()
 {
-cat << CONFEOF >./nv-ipam.yaml
+cat << CONFHEREDOC >./nv-ipam.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -39,7 +39,7 @@ data:
       },
       "nodeSelector": {"kubernetes.io/os": "linux"}
     }
-CONFEOF
+CONFHEREDOC
 }
 # Create CNI configuration
 # 
@@ -47,7 +47,7 @@ CONFEOF
 #
 function cni_bridge()
 { 
-cat <<CNIBRIDGEEOF> /etc/cni/net.d/nv-ipam.d/10-${NETOP_NETWORK}.conf
+cat <<CNIBRIDGEHEREDOC> /etc/cni/net.d/nv-ipam.d/10-${NETOP_NETWORK}.conf
 {
     "cniVersion": "0.4.0",
     "name": "${NETOP_NETWORK}",
@@ -60,11 +60,11 @@ cat <<CNIBRIDGEEOF> /etc/cni/net.d/nv-ipam.d/10-${NETOP_NETWORK}.conf
         "poolName": "${NETOP_NETWORK_POOL}"
     }
 }
-CNIBRIDGEEOF
+CNIBRIDGEHEREDOC
 }
 function cni_ippool()
 {
-cat <<CNIEOF> /etc/cni/net.d/nv-ipam.d/10-${NETOP_NETWORK_POOL}.conf
+cat <<CNIHEREDOC> /etc/cni/net.d/nv-ipam.d/10-${NETOP_NETWORK_POOL}.conf
 {
     "type": "nv-ipam",
     "poolName": "${NETOP_NETWORK_POOL}",
@@ -74,7 +74,7 @@ cat <<CNIEOF> /etc/cni/net.d/nv-ipam.d/10-${NETOP_NETWORK_POOL}.conf
     "logFile": "/var/log/nv-ipam-cni.log",
     "logLevel": "info"
 }
-CNIEOF
+CNIHEREDOC
 }
 mkdir -p  /etc/cni/net.d/nv-ipam.d
 nv_ippool

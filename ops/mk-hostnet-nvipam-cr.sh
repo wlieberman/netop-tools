@@ -18,7 +18,7 @@ if [ "$#" -lt 1 ];then
   exit 1
 fi
 for NIDX in ${*};do
-cat <<EOF> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
+cat <<HEREDOC> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
 apiVersion: mellanox.com/v1alpha1
 kind: ${NETOP_NETWORK_TYPE}
 metadata:
@@ -32,5 +32,5 @@ spec:
       "type": "${IPAM_TYPE}",
       "poolName": "${NETOP_NETWORK_POOL}"
     }
-EOF
+HEREDOC
 done
