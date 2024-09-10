@@ -18,7 +18,7 @@ if [ "$#" -lt 1 ];then
   exit 1
 fi
 for DEV in ${*};do
-cat <<EOF> "${NETOP_NETWORK_NAME}-${DEV}"-cr.yaml
+cat <<HEREDOC> "${NETOP_NETWORK_NAME}-${DEV}"-cr.yaml
 apiVersion: mellanox.com/v1alpha1
 kind: "${NETOP_NETWORK_TYPE}"
 metadata:
@@ -39,6 +39,6 @@ spec:
       "log_file": "/var/log/${IPAM_TYPE}.log",
       "log_level": "info"
     }
-EOF
+HEREDOC
 # "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design
 done

@@ -24,7 +24,7 @@ NDEV=${1}
 shift
 NIDX=${1}
 shift
-cat <<EOF> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
+cat <<HEREDOC> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
 apiVersion: mellanox.com/v1alpha1
 kind: ${NETOP_NETWORK_TYPE}
 metadata:
@@ -47,5 +47,5 @@ spec:
       "log_file" : "/var/log/whereabouts.log",
       "log_level" : "info",
     }
-EOF
+HEREDOC
 # "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design

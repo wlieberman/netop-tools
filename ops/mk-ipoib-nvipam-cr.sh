@@ -21,7 +21,7 @@ NDEV=${1}
 shift
 NIDX=${1}
 shift
-cat <<EOF> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
+cat <<HEREDOC> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
 apiVersion: mellanox.com/v1alpha1
 kind: ${NETOP_NETWORK_TYPE}
 metadata:
@@ -37,4 +37,4 @@ spec:
       "type": "${IPAM_TYPE}",
       "poolName": "${NETOP_NETWORK_POOL}"
     }
-EOF
+HEREDOC

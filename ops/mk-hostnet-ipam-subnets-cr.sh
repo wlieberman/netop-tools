@@ -22,7 +22,7 @@ shift
 RESOURCE=`echo ${NETWORK_NAME}|cut -d'-' -f2-99|sed 's/-/_/g'`
 IDX=0
 for DEV in ${*};do
-cat <<EOF> "${NETWORK_NAME}-${DEV}"-cr.yaml
+cat <<HEREDOC> "${NETWORK_NAME}-${DEV}"-cr.yaml
 apiVersion: mellanox.com/v1alpha1
 kind: "${NETOP_NETWORK_TYPE}"
 metadata:
@@ -42,6 +42,6 @@ spec:
       "log_file": "/var/log/whereabouts.log",
       "log_level": "info"
     }
-EOF
+HEREDOC
 let IDX=IDX+1
 done

@@ -9,7 +9,7 @@ if [ "$#" -lt 1 ];then
   exit 1
 fi
 for NIDX in ${*};do
-cat <<EOF> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
+cat <<HEREDOC> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
 apiVersion: sriovnetwork.openshift.io/v1
 kind: ${NETOP_NETWORK_TYPE}
 metadata:
