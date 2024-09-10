@@ -11,6 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# https://github.com/Mellanox/network-operator/tree/master/example/crs
+#
 source ${NETOP_ROOT_DIR}/global_ops.cfg
 if [ "$#" -lt 1 ];then
   echo "usage:$0 ${NETWORK_MASTER} {NETWORK IDX}"
@@ -35,6 +38,14 @@ spec:
   ipam: |
     {
       "type": "${IPAM_TYPE}",
-      "poolName": "${NETOP_NETWORK_POOL}"
+      "datastore": "kubernetes",
+      "kubernetes": {
+        "kubeconfig": "/etc/cni/net.d/whereabouts.d/whereabouts.kubeconfig"
+      },
+      "range": "${NETOP_NETWORK_RANGE}",
+      "exclude": [],
+      "log_file" : "/var/log/whereabouts.log",
+      "log_level" : "info",
     }
 EOF
+# "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design
