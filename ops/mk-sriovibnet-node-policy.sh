@@ -17,7 +17,7 @@ cat << HEREDOC > ./sriovnetwork-node-policy-${NDIX}.yaml
 apiVersion: sriovnetwork.openshift.io/v1
 kind: SriovNetworkNodePolicy
 metadata:
-  name: policy-${NDIX}
+  name: sriovibnet-node-policy-${NDIX}
   namespace: ${NETOP_NAMESPACE}
 spec:
   deviceType: netdevice
