@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # configure the secondary network
 #
@@ -9,19 +9,30 @@ if [ "$#" -lt 1 ];then
   exit 1
 fi
 for NIDX in ${*};do
-cat <<HEREDOC> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
+FILE="${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml"
+cat <<HEREDOC1> ${FILE}
 apiVersion: sriovnetwork.openshift.io/v1
 kind: ${NETOP_NETWORK_TYPE}
 metadata:
   name: "${NETOP_NETWORK_NAME}-${NIDX}"
   namespace: ${NETOP_NAMESPACE}
 spec:
-  vlan: ${NETOP_NETWORK_VLAN}
+HEREDOC1
+if [ "${NETOP_NETWORK_TYPE}" = "SriovNetwork" ];then
+  echo "  vlan: ${NETOP_NETWORK_VLAN}" >> ${FILE}
+else
+  echo "  linkState: enable" >> ${FILE}
+fi
+cat <<HEREDOC2>> ${FILE}
   networkNamespace: "${NETOP_APP_NAMESPACE}"
   resourceName: "${NETOP_RESOURCE}_${NIDX}"
   ipam: |
     {
       "type": "${IPAM_TYPE}",
+HEREDOC2
+    case ${IPAM_TYPE} in
+    ipam)
+cat <<HEREDOC3>> ${FILE}
       "datastore": "kubernetes",
       "kubernetes": {
         "kubeconfig": "/etc/cni/net.d/${IPAM_TYPE}.d/${IPAM_TYPE}.kubeconfig"
@@ -30,8 +41,38 @@ spec:
       "exclude": [],
       "log_file": "/var/log/${IPAM_TYPE}.log",
       "log_level": "info"
-    }
-HEREDOC
+HEREDOC3
+      ;;
+    nv-ipam)
+cat <<HEREDOC4>> ${FILE}
+      "datastore": "kubernetes",
+      "kubernetes": {
+        "kubeconfig": "/etc/cni/net.d/${IPAM_TYPE}.d/${IPAM_TYPE}.kubeconfig"
+      },
+      "log_file": "/var/log/${NETWORK_TYPE}_${IPAM_TYPE}.log",
+      "log_level": "debug",
+      "poolName": "${NETOP_NETWORK_POOL}"
+HEREDOC4
+      ;;
+    dhcp)
+cat <<HEREDOC5>> ${FILE}
+      "daemonSocketPath": "/run/cni/dhcp.sock",
+      "request": [
+        {
+          "skipDefault": false,
+          "option": "classless-static-routes"
+        }
+      ],
+      "provide": [
+        {
+          "option": "host-name",
+          "fromArg": "K8S_POD_NAME"
+        }
+      ]
+HEREDOC5
+      ;;
+    esac
+echo "    }" >> ${FILE}
 done
 # "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design
 #kubectl get sriovnetwork -A
