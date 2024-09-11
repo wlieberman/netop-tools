@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # configure the secondary network
 #
@@ -17,16 +17,22 @@ metadata:
   name: "${NETOP_NETWORK_NAME}-${NIDX}"
   namespace: ${NETOP_NAMESPACE}
 spec:
-  vlan: ${NETOP_NETWORK_VLAN}
+HEREDOC1
+if [ "${NETOP_NETWORK_TYPE}" = "SriovNetwork" ];then
+  echo "  vlan: ${NETOP_NETWORK_VLAN}" >> ${FILE}
+else
+  echo "  linkState: enable" >> ${FILE}
+fi
+cat <<HEREDOC2>> ${FILE}
   networkNamespace: "${NETOP_APP_NAMESPACE}"
   resourceName: "${NETOP_RESOURCE}_${NIDX}"
   ipam: |
     {
       "type": "${IPAM_TYPE}",
-HEREDOC1
+HEREDOC2
     case ${IPAM_TYPE} in
     ipam)
-cat <<HEREDOC2>> ${FILE}
+cat <<HEREDOC3>> ${FILE}
       "datastore": "kubernetes",
       "kubernetes": {
         "kubeconfig": "/etc/cni/net.d/${IPAM_TYPE}.d/${IPAM_TYPE}.kubeconfig"
@@ -35,10 +41,10 @@ cat <<HEREDOC2>> ${FILE}
       "exclude": [],
       "log_file": "/var/log/${IPAM_TYPE}.log",
       "log_level": "info"
-HEREDOC2
+HEREDOC3
       ;;
     nv-ipam)
-cat <<HEREDOC3>> ${FILE}
+cat <<HEREDOC4>> ${FILE}
       "datastore": "kubernetes",
       "kubernetes": {
         "kubeconfig": "/etc/cni/net.d/${IPAM_TYPE}.d/${IPAM_TYPE}.kubeconfig"
@@ -46,10 +52,10 @@ cat <<HEREDOC3>> ${FILE}
       "log_file": "/var/log/${NETWORK_TYPE}_${IPAM_TYPE}.log",
       "log_level": "debug",
       "poolName": "${NETOP_NETWORK_POOL}"
-HEREDOC3
+HEREDOC4
       ;;
     dhcp)
-cat <<HEREDOC4>> ${FILE}
+cat <<HEREDOC5>> ${FILE}
       "daemonSocketPath": "/run/cni/dhcp.sock",
       "request": [
         {
@@ -63,7 +69,7 @@ cat <<HEREDOC4>> ${FILE}
           "fromArg": "K8S_POD_NAME"
         }
       ]
-HEREDOC4
+HEREDOC5
       ;;
     esac
 echo "    }" >> ${FILE}

@@ -18,11 +18,7 @@ for DEVDEF in ${NETOP_NETLIST[@]};do
   kubectl apply -f sriovibnet-node-policy-${NIDX}.yaml
   ${NETOP_ROOT_DIR}/ops/mk-sriovibnet-network-attachment.sh ${NIDX}
   kubectl apply set-last-applied -f "./Network-Attachment-Definitions-${NIDX}.yaml" --create-annotation
-  if [ "${IPAM_TYPE}" = "nv-ipam" ];then
-    ${NETOP_ROOT_DIR}/ops/mk-sriovibnet-nvipam-cr.sh ${NIDX}
-  else
-    ${NETOP_ROOT_DIR}/ops/mk-sriovibnet-ipam-cr.sh ${NIDX}
-  fi
+  ${NETOP_ROOT_DIR}/ops/mk-sriovnet-ipam-cr.sh ${NIDX}
   kubectl apply -f ${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml
 done
 #
