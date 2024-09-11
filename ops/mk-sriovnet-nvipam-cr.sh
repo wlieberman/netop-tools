@@ -16,18 +16,18 @@ metadata:
   name: "${NETOP_NETWORK_NAME}-${NIDX}"
   namespace: ${NETOP_NAMESPACE}
 spec:
-  #vlan: ${NETOP_NETWORK_VLAN}
+  vlan: ${NETOP_NETWORK_VLAN}
   networkNamespace: "${NETOP_APP_NAMESPACE}"
   resourceName: "${NETOP_RESOURCE}_${NIDX}"
   ipam: |
     {
+      "type": "${IPAM_TYPE}",
       "datastore": "kubernetes",
       "kubernetes": {
         "kubeconfig": "/etc/cni/net.d/${IPAM_TYPE}.d/${IPAM_TYPE}.kubeconfig"
       },
-      "log_file": "/tmp/${NETWORK_TYPE}.log",
+      "log_file": "/var/log/${NETWORK_TYPE}_${IPAM_TYPE}.log",
       "log_level": "debug",
-      "type": "${IPAM_TYPE}",
       "poolName": "${NETOP_NETWORK_POOL}"
     }
 HEREDOC

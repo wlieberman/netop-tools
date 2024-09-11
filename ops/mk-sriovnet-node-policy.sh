@@ -21,10 +21,9 @@ metadata:
   namespace: ${NETOP_NAMESPACE}
 spec:
   deviceType: netdevice
-  mtu: 9000
+  mtu: 1500
   nicSelector:
     vendor: "15b3"
-    deviceID: "101b"
     rootDevices: [ "${PCI_DEVICE_LST}" ]
   numVfs: 8
   priority: 90    # used to resolve multiple policy definitions, lower value, higher priority
