@@ -2,6 +2,7 @@
 #
 #
 #
+source "${NETOP_ROOT_DIR}/global_ops.cfg"
 function keyring2004old()
 {
   source /etc/os-release
