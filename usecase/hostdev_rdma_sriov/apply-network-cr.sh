@@ -10,7 +10,8 @@ source ${NETOP_ROOT_DIR}/global_ops.cfg
 for NIDXDEF in ${NETOP_NETLIST[@]};do
   NIDX=`echo ${NIDXDEF}|cut -d',' -f1`
   ${NETOP_ROOT_DIR}/ops/mk-hostdev-ipam-cr.sh ${NIDX}
-  kubectl apply -f ${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml
+  FILE="${NETOP_ROOT_DIR}/usecase/${USECASE}/${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml"
+  kubectl apply -f "${FILE}"
 done
 #
 # make sure the ip pool is created
@@ -18,5 +19,10 @@ done
 kubectl get ${NETOP_NETWORK_TYPE}
 if [ "${IPAM_TYPE}" = "nv-ipam" ];then
   ${NETOP_ROOT_DIR}/ops/mk-nvipam-pool.sh
-  kubectl apply -f ippool.yaml
+  FILE="${NETOP_ROOT_DIR}/usecase/${USECASE}/ippool.yaml"
+  kubectl apply -f "${FILE}"
 fi
+#
+# verify the network devices
+#
+${NETOP_ROOT_DIR}/ops/getnetwork.sh

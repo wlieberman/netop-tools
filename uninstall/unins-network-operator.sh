@@ -6,14 +6,20 @@ source ${NETOP_ROOT_DIR}/global_ops.cfg
 function del_network-ad()
 {
   NETWORK_AD="network-attachment-definitions.k8s.cni.cncf.io"
-  kubectl delete ${NETWORK_AD} $(k get ${NETWORK_AD} | grep -v NAME | cut -d' ' -f1)
+  CRDS=$(kubectl get ${NETWORK_AD} | grep -v NAME | cut -d' ' -f1)
+  for CRD in ${CRDS};do
+    kubectl delete ${NETWORK_AD} $(kubectl get ${NETWORK_AD} | grep -v NAME | cut -d' ' -f1)
+  done
   kubectl delete crd ${NETWORK_AD}
+}
+function del_sriovnet()
+{
+  kubectl delete --force sriovnetwork -n ${NETOP_NAMESPACE} ${NETOP_NETWORK}
+  kubectl patch crd/sriovnetworks.sriovnetwork.openshift.io -p '{"metadata":{"finalizers":[]}}' --type=merge
 }
 helm uninstall network-operator -n ${NETOP_NAMESPACE} --no-hooks
 #${NETOP_ROOT_DIR}/uninstall/delcrds.sh   # no longer add crds, so nolonger delete
 kubectl delete --force NicClusterPolicy nic-cluster-policy
-kubectl delete --force sriovnetwork -n ${NETOP_NAMESPACE} ${NETOP_NETWORK}
-kubectl patch crd/sriovnetworks.sriovnetwork.openshift.io -p '{"metadata":{"finalizers":[]}}' --type=merge
 #
 # manually deleting crds
 #
