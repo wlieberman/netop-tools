@@ -60,7 +60,7 @@ HEREDOC3
 function mk_ipam_cr()
 {
   case ${IPAM_TYPE} in
-  ipam)
+  whereabouts)
     ipam_config
     ;;
   nv-ipam)
