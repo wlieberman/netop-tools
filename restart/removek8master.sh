@@ -5,7 +5,9 @@
 function removek8()
 {
   kubeadm reset
-  systemctl stop docker && sudo systemctl stop kubelet
+  systemctl stop docker
+  systemctl stop containerd
+  systemctl stop kubelet 
   rm -rf /etc/kubernetes/
   #rm -rf .kube/
   rm -rf /var/lib/kubelet/

@@ -2,6 +2,7 @@
 #
 #
 #
+source "${NETOP_ROOT_DIR}/global_ops.cfg"
 apt-get update -y
 apt-get install -y ca-certificates curl gnupg lsb-release
 
