@@ -3,6 +3,7 @@
 # install the network operator.
 #
 source ${NETOP_ROOT_DIR}/global_ops.cfg
+${NETOP_ROOT_DIR}/setuc.sh
 USECASE_DIR="${NETOP_ROOT_DIR}/usecase/${USECASE}"
 systemctl restart kubelet
 #helm install -n ${NETOP_NAMESPACE} --create-namespace network-operator ./network-operator

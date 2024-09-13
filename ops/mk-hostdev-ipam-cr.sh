@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 source ${NETOP_ROOT_DIR}/global_ops.cfg
-if [ "$#" -lt 1 ];then
-  echo "usage:$0 {NETWORK_NIDX_LIST}"
-  echo "example:$0 a b c d e f g h"
+source ${NETOP_ROOT_DIR}/ops/mk-ipam-cr.sh
+if [ "$#" -ne 1 ];then
+  echo "usage:$0 {NETWORK IDX}"
+  echo "example:$0 a"
   exit 1
 fi
-for NIDX in ${*};do
-cat <<HEREDOC> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
+NIDX=${1}
+shift
+FILE="${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml"
+cat <<HEREDOC> "${FILE}"
 apiVersion: mellanox.com/v1alpha1
 kind: ${NETOP_NETWORK_TYPE}
 metadata:
@@ -27,10 +30,6 @@ metadata:
 spec:
   networkNamespace: "${NETOP_APP_NAMESPACE}"
   resourceName: "${NETOP_RESOURCE}_${NIDX}"
-  ipam: |
-    {
-      "type": "${IPAM_TYPE}",
-      "poolName": "${NETOP_NETWORK_POOL}"
-    }
 HEREDOC
-done
+  mk_ipam_cr >> "${FILE}"
+# "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design

@@ -15,7 +15,8 @@
 # https://github.com/Mellanox/network-operator/tree/master/example/crs
 #
 source ${NETOP_ROOT_DIR}/global_ops.cfg
-if [ "$#" -lt 1 ];then
+source ${NETOP_ROOT_DIR}/ops/mk-ipam-cr.sh
+if [ "$#" -ne 2 ];then
   echo "usage:$0 ${NETWORK_MASTER} {NETWORK IDX}"
   echo "example:$0 ens1f0np0 a"
   exit 1
@@ -24,7 +25,8 @@ NDEV=${1}
 shift
 NIDX=${1}
 shift
-cat <<HEREDOC> "${NETOP_NETWORK_NAME}-${NIDX}"-cr.yaml
+FILE="${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml"
+cat <<HEREDOC> "${FILE}"
 apiVersion: mellanox.com/v1alpha1
 kind: ${NETOP_NETWORK_TYPE}
 metadata:
@@ -35,17 +37,7 @@ spec:
   master: "${NDEV}"
   mode: "bridge"
   mtu: 1500
-  ipam: |
-    {
-      "type": "${IPAM_TYPE}",
-      "datastore": "kubernetes",
-      "kubernetes": {
-        "kubeconfig": "/etc/cni/net.d/whereabouts.d/whereabouts.kubeconfig"
-      },
-      "range": "${NETOP_NETWORK_RANGE}",
-      "exclude": [],
-      "log_file" : "/var/log/whereabouts.log",
-      "log_level" : "info",
-    }
+  resourceName: "${NETOP_RESOURCE}_${NIDX}"
 HEREDOC
+  mk_ipam_cr >> "${FILE}"
 # "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design

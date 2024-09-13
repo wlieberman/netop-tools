@@ -35,7 +35,7 @@ data:
   config: |
     {
       "pools": {
-        "${NETOP_NETWORK_POOL}": {"subnet": ${NVNOP_NETWORK_RANGE}, "perNodeBlockSize": ${NVNOP_PERNODE_BLOCKSIZE}, "gateway": ${NVNOP_NETWORK_GW}}
+        "${NETOP_NETWORK_POOL}": {"subnet": ${NETOP_NETWORK_RANGE}, "perNodeBlockSize": ${NVNOP_PERNODE_BLOCKSIZE}, "gateway": ${NETOP_NETWORK_GW}}
       },
       "nodeSelector": {"kubernetes.io/os": "linux"}
     }
