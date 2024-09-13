@@ -21,7 +21,7 @@ metadata:
   name: ${NETOP_NETWORK_NAME}-${DEV}
   namespace: ${NETOP_APP_NAMESPACE}
   annotations:
-    k8s.v1.cni.cncf.io/resourceName: nvidia.com/${NETOP_RESOURCE}
+    k8s.v1.cni.cncf.io/resourceName: nvidia.com/${NETOP_RESOURCE}_${DEV}
 spec:
   config: |-
     {

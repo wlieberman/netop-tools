@@ -1,14 +1,15 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # run on the worker nodes
 #
 NUMVFS=${1}
 shift
 for BDF in ${*};do
-  PATH=$(find /sys -name sriov_numvfs -exec echo {} \;| grep "${BFD}" )
-  if [ "${PATH}" != "" ];then
-    echo "${NUMVFS}" > ${PATH}
+  VFPATH=`find /sys -name sriov_numvfs | grep "${BDF}"`
+  echo "VFPATH:${VFPATH}"
+  if [ "${VFPATH}" != "" ];then
+    echo "${NUMVFS}" > ${VFPATH}
   else
-    echo "WARNING:Not Found:${BFD}"
+    echo "WARNING:Not Found:${BDF}"
   fi
 done

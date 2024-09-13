@@ -37,7 +37,7 @@ spec:
   master: "${NDEV}"
   mode: "bridge"
   mtu: 1500
-  resourceName: "${NETOP_RESOURCE}_${NIDX}"
 HEREDOC
+  #resourceName: "${NETOP_RESOURCE}_${NIDX}"
   mk_ipam_cr >> "${FILE}"
 # "gateway": "${NETOP_NETWORK_GW}" # for ipam config above may need to set depending on fabric design
