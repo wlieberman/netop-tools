@@ -23,7 +23,7 @@ master)
   ${NETOP_ROOT_DIR}/install/${HOST_OS}/ins-docker.sh
   ;;
 init)
-  kubeadm init --pod-network-cidr=${K8CIDR}
+  kubeadm init --pod-network-cidr=${K8CIDR} --v=5
   
   # ./fixes/fix config issues
   ${NETOP_ROOT_DIR}/install/fixes/fixcrtauth.sh
