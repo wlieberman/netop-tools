@@ -18,7 +18,8 @@ for DEVDEF in ${NETOP_NETLIST[@]};do
   ${NETOP_ROOT_DIR}/ops/mk-sriovnet-node-policy.sh ${NIDX} ${NDEV}
   kubectl apply -f "${DIR}/sriovnet-node-policy-${NIDX}.yaml"
   ${NETOP_ROOT_DIR}/ops/mk-sriovnet-network-attachment.sh ${NIDX}
-  kubectl apply set-last-applied -f "${DIR}/Network-Attachment-Definitions-${NIDX}.yaml" --create-annotation
+  #kubectl apply set-last-applied -f "${DIR}/Network-Attachment-Definitions-${NIDX}.yaml" --create-annotation
+  kubectl apply -f "${DIR}/Network-Attachment-Definitions-${NIDX}.yaml"
   ${NETOP_ROOT_DIR}/ops/mk-sriovnet-ipam-cr.sh ${NIDX}
   kubectl apply -f "${DIR}/${NETOP_NETWORK_NAME}-${NIDX}-cr.yaml"
 done
