@@ -78,6 +78,8 @@ secondaryNetwork:
     deploy: true
   cniPlugins:
     deploy: true
+  ipoib:
+    deploy: true
   ipamPlugin:
     deploy: ${IPAMVAL}
 HEREDOC4
