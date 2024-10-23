@@ -30,7 +30,7 @@ nvIpam:
   deploy: ${NVIPAMVAL}
 
 ofedDriver:
-  deploy: true
+  deploy: false
   env:
   - name: RESTORE_DRIVER_ON_POD_TERMINATION
     value: "true"
